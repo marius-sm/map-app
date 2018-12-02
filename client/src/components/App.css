@@ -1,0 +1,23 @@
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+.app {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.overlay {
+	display: flex;
+	flex-direction: row;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	pointer-events: none;
+}
