@@ -6,23 +6,26 @@ import {IoIosSettings as SettingsIcon,
 		IoIosInformation as InfoIcon,
 		IoMdArrowDropleft as ArrowIcon,
 		IoIosAdd as AddIcon,
-		IoIosSearch as SearchIcon} from "react-icons/io"; //Pour les icones, voir https://react-icons.netlify.com/#/
+		IoIosSearch as SearchIcon,
+	  IoIosLogIn as LoginIcon} from "react-icons/io"; //Pour les icones, voir https://react-icons.netlify.com/#/
 import Settings from './Settings'
 import Users from './Users'
 import styles from './SidePopups.css'
+import Login from './Login'
 
 function SidePopups(props) {
 	return (
 		<div className={styles.SidePopups}>
-			<Popup name="Search" title="Search" />
+			<Popup name="Search" title="Search" icon={<SearchIcon/>} />
 			<Popup name="Settings" title="Settings" icon={<SettingsIcon />}>
 				<Settings settings={props.settings} />
 			</Popup>
 			<Popup name="Users" title="Users" icon={<UsersIcon />}>
 				<Users/>
 			</Popup>
-			<Popup name="Info" />
-			<Popup name="Add" />
+			<Popup name="LogIn" title="LogIn" icon={<LoginIcon/>} >
+				<Login/>
+			</Popup>
 		</div>
 	)
 }
