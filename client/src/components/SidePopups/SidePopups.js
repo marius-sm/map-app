@@ -19,7 +19,7 @@ function SidePopups(props) {
 				<Settings settings={props.settings} />
 			</Popup>
 			<Popup name="Users" title="Users" icon={<UsersIcon />}>
-				<Users/>
+				<Users />
 			</Popup>
 			<Popup name="Info" />
 			<Popup name="Add" />
