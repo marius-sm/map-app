@@ -21,16 +21,9 @@ class App extends React.Component {
 			settings: {
 				mapStyle: "mapbox://styles/mapbox/streets-v9",
 				changeMapStyle: this.changeMapStyle
-			},
-			test_data: []
+			}
 		}
 	}
-
-	componentDidMount() {
-      	fetch('/users')
-        	.then(res => res.json())
-        	.then(users => this.setState({ test_data: users }));
-    }
 
 	changeMapStyle(newMapStyle) {
 		this.setState(previousState => ({settings: {...previousState.settings, mapStyle: newMapStyle}}));
@@ -41,7 +34,7 @@ class App extends React.Component {
 		    <Router>
       			<div className="app">
 					<Map mapStyle={this.state.settings.mapStyle} />
-					<Overlay settings={this.state.settings} users={this.state.test_data}/>
+					<Overlay settings={this.state.settings}/>
       			</div>
 	  		</Router>
     	)

@@ -1,15 +1,30 @@
 import React, {Component} from 'react';
 
-function Users(props) {
-	const users = props.users ? props.users : []
-	return (
-		<div className="Users">
-		{props.users.map(user =>
-	  	<div key={user.id}>{user.username}</div>
+class Users extends Component {
 
-	)}
-	</div>
-)
+	constructor(props) {
+		super(props)
+		this.state = {
+			users: []
+		}
+	}
+
+	componentDidMount() {
+      	fetch('/users')
+        	.then(res => res.json())
+        	.then(users => this.setState({ users: users }));
+    }
+
+	render() {
+		const users = this.state.users ? this.state.users : []
+		return (
+			<div className="Users">
+				{this.state.users.map(user =>
+	  				<div key={user.id}>{user.username}</div>
+				)}
+			</div>
+		)
+	}
 }
 
 export default Users;

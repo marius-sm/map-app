@@ -15,8 +15,12 @@ function SidePopups(props) {
 	return (
 		<div className={styles.SidePopups}>
 			<Popup name="Search" title="Search" />
-			<Popup name="Settings" title="Settings" icon={<SettingsIcon />} settings={props.settings}><Settings settings={props.settings} /></Popup>
-			<Popup name="Users" title="Users" icon={<UsersIcon />} users={props.users}><Users users={props.users}/></Popup>
+			<Popup name="Settings" title="Settings" icon={<SettingsIcon />}>
+				<Settings settings={props.settings} />
+			</Popup>
+			<Popup name="Users" title="Users" icon={<UsersIcon />}>
+				<Users/>
+			</Popup>
 			<Popup name="Info" />
 			<Popup name="Add" />
 		</div>
