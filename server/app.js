@@ -3,6 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -12,21 +16,48 @@ var app = express();
 
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// serve static files
 app.use(express.static(path.join(__dirname, 'public')));
+
+// connect to MongoDB
+mongoose.connect('mongodb://Marius:mdpmarius1@ds151631.mlab.com:51631/mapapp', { useNewUrlParser: true });
+var db = mongoose.connection;
+
+// handle mongo error
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+	console.log('Connected to database !')
+});
+
+// use sessions for tracking logins
+app.use(session({
+  secret: 'notre petit secret',
+  resave: true,
+  saveUninitialized: false,
+  store: new MongoStore({
+    mongooseConnection: db
+  })
+}));
+
+// parse incoming requests
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+	res.status(404).send("Sorry, can't find that !")
+ 	next(createError(404));
 });
 
 // error handler
