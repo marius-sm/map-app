@@ -13,6 +13,20 @@ class Login extends Component{
 		}
 	}
 
+	handleLoginButtonClick() {
+		fetch('/', {
+  			method: 'POST',
+  			headers: {
+    			'Accept': 'application/json',
+    			'Content-Type': 'application/json',
+  			},
+  			body: JSON.stringify({
+    			loguser: 'yourValue',
+    			logpassword: 'yourOtherValue',
+  			})
+		})
+	}
+
 	render() {
 		return (
 			<div className={styles.Login}>
@@ -31,7 +45,7 @@ class Login extends Component{
 							onChange = {(event,newValue) => this.setState({password:newValue})}
 						/>
 						<br/><br />
-						<Button variant="contained" onClick={(event) => this.handleClick(event)} >Connect</Button>
+						<Button variant="contained" onClick={(event) => this.handleLoginButtonClick(event)} >Connect</Button>
 					</div>
 				</MuiThemeProvider>
 			</div>
