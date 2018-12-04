@@ -19,12 +19,14 @@ class Login extends Component{
         <MuiThemeProvider>
           <div>
            <TextField
+             FormHelperTextProps={{ style: { color: 'white'} }}
              placeholder="Enter your Username"
              helperText="Username"
              onChange = {(event,newValue) => this.setState({username:newValue})}
              />
            <br/>
              <TextField
+               FormHelperTextProps={{ style: { color: 'white'} }}
                type="password"
                placeholder="Enter your Password"
                helperText="Password"
