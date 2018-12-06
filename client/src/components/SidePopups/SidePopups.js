@@ -12,6 +12,7 @@ import Settings from './Settings'
 import Users from './Users'
 import styles from './SidePopups.css'
 import Login from './Login'
+import Register from './Register'
 
 function SidePopups(props) {
 	return (
@@ -25,6 +26,7 @@ function SidePopups(props) {
 			</Popup>
 			<Popup name="LogIn" title="LogIn" icon={<LoginIcon/>} >
 				<Login/>
+				<Register/>
 			</Popup>
 		</div>
 	)

@@ -11,10 +11,11 @@ class Login extends Component{
 			username: 'test_user',
 			password: 'test_pswd'
 		}
+		this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this)
 	}
 
 	handleLoginButtonClick() {
-		fetch('/', {
+		fetch('/users', {
   			method: 'POST',
   			headers: {
     			'Accept': 'application/json',
@@ -45,7 +46,7 @@ class Login extends Component{
 							onChange = {(event,newValue) => this.setState({password:newValue})}
 						/>
 						<br/><br />
-						<Button variant="contained" onClick={(event) => this.handleLoginButtonClick(event)} >Connect</Button>
+						<Button variant="contained" onClick={(event) => this.handleLoginButtonClick(event)} >Login</Button>
 					</div>
 				</MuiThemeProvider>
 			</div>
