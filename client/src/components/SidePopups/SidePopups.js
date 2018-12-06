@@ -24,7 +24,7 @@ function SidePopups(props) {
 			<Popup name="Users" title="Users" icon={<UsersIcon />}>
 				<Users />
 			</Popup>
-			<Popup name="LogIn" title="LogIn" icon={<LoginIcon/>} >
+			<Popup name="Login" title="Login" icon={<LoginIcon/>} >
 				<Login/>
 				<Register/>
 			</Popup>
