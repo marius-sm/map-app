@@ -27,14 +27,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // connect to MongoDB
-mongoose.connect('mongodb://Marius:mdpmarius1@ds151631.mlab.com:51631/mapapp', { useNewUrlParser: true });
+//mongoose.connect('mongodb://Marius:mdpmarius1@ds151631.mlab.com:51631/mapapp', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/mapapp', { useNewUrlParser: true });
 var db = mongoose.connection;
 
 // handle mongo error
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
 	console.log('Connected to database !')
-});
+})
 
 // use sessions for tracking logins
 app.use(session({
@@ -51,7 +52,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-app.use('/', indexRouter);
+//app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
