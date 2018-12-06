@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import styles from './Login.css'
+//import styles from './Register.css'
 
 class Register extends Component{
 	constructor(props) {
@@ -59,7 +59,7 @@ class Register extends Component{
 
 	render() {
 		return (
-			<div className={styles.Login}>
+			<div>
 				<MuiThemeProvider>
 					<div>
 						<TextField
@@ -68,7 +68,7 @@ class Register extends Component{
 							onChange={this.handleUsernameChange}
 							value={this.state.username}
 						/>
-						<p>{this.state.usernameAlreadyTaken ? 'Username already taken...' : 'Username free !'}</p>
+						{this.state.usernameAlreadyTaken ? <p style={{color: 'red'}}>Username already taken...</p> : <p style={{color: 'green'}}>Username free !</p>}
 						<br/>
 						<TextField
 							FormHelperTextProps={{ style: { color: 'white'} }}
