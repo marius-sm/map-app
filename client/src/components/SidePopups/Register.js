@@ -68,7 +68,7 @@ class Register extends Component{
 							onChange={this.handleUsernameChange}
 							value={this.state.username}
 						/>
-						<p>{this.state.usernameAlreadyTaken ? 'Username already taken...' : ''}</p>
+						<p>{this.state.usernameAlreadyTaken ? 'Username already taken...' : 'Username free !'}</p>
 						<br/>
 						<TextField
 							FormHelperTextProps={{ style: { color: 'white'} }}
