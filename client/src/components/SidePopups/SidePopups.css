@@ -61,7 +61,7 @@
 	height: 12px;
 	left: -6px;
 	bottom: 21px;
-	color: rgba(0,0,0,0.9);
+	color: rgba(0,1,0,0.9);
 }
 
 :local(.ContentTitle) {
