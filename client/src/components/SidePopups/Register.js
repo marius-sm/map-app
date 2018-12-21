@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 //import styles from './Register.css'
 
 class Register extends Component{
+
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -20,7 +21,8 @@ class Register extends Component{
 	}
 
 	handleRegisterButtonClick() {
-		console.log(this.state)
+		if(this.state.password != this.state.passwordConfirmation) return;
+		if(this.state.usernameAlreadyTaken) return;
 		fetch('/users/create', {
   			method: 'POST',
   			headers: {
@@ -68,7 +70,8 @@ class Register extends Component{
 							onChange={this.handleUsernameChange}
 							value={this.state.username}
 						/>
-						{this.state.usernameAlreadyTaken ? <p style={{color: 'red'}}>Username already taken...</p> : <p style={{color: 'green'}}>Username free !</p>}
+						{this.state.username == '' ? null :
+							this.state.usernameAlreadyTaken ? <p style={{color: 'red'}}>Username already taken...</p> : <p style={{color: 'green'}}>Username free !</p>}
 						<br/>
 						<TextField
 							FormHelperTextProps={{ style: { color: 'white'} }}
@@ -85,6 +88,7 @@ class Register extends Component{
 							onChange = {this.handlePasswordConfirmationChange}
 							value={this.state.passwordConfirmation}
 						/>
+						{this.state.passwordConfirmation == '' ? null : this.state.passwordConfirmation == this.state.password ? null : <p style={{color: 'red'}}>Passwords do not match.</p>}
 						<br/><br/>
 						<Button variant="contained" onClick={(event) => this.handleRegisterButtonClick(event)}>Register</Button>
 					</div>

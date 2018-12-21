@@ -39,7 +39,7 @@ db.once('open', function () {
 
 // use sessions for tracking logins
 app.use(session({
-  secret: 'notre petit secret',
+  secret: 'notre secret',
   resave: true,
   saveUninitialized: false,
   store: new MongoStore({

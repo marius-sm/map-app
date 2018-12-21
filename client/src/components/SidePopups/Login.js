@@ -9,7 +9,8 @@ class Login extends Component{
 		super(props)
 		this.state = {
 			username: 'test_user',
-			password: 'test_pswd'
+			password: 'test_pswd',
+			loggedIn: false
 		}
 		this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this)
 	}
