@@ -23,8 +23,6 @@ class ConnectedLogin extends Component{
 		this.handleUsernameChange = this.handleUsernameChange.bind(this)
 		this.handlePasswordChange = this.handlePasswordChange.bind(this)
 		this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this)
-		this.handleCheckButtonClick = this.handleCheckButtonClick.bind(this)
-		this.handleLogoutButtonClick = this.handleLogoutButtonClick.bind(this)
 	}
 
 	handleUsernameChange(event) {
@@ -45,14 +43,6 @@ class ConnectedLogin extends Component{
 
 	handleLoginButtonClick() {
 		this.props.loginWithPassword(this.state.username, this.state.password);
-	}
-
-	handleCheckButtonClick() {
-
-	}
-
-	handleLogoutButtonClick() {
-		this.props.logout();
 	}
 
 	render() {
@@ -78,8 +68,6 @@ class ConnectedLogin extends Component{
 						/>
 						<br/><br />
 						<Button variant="contained" onClick={(event) => this.handleLoginButtonClick(event)}>Login</Button>
-						<Button variant="contained" onClick={this.handleCheckButtonClick}>Check status</Button>
-						<Button variant="contained" onClick={this.handleLogoutButtonClick}>Logout</Button>
 					</div>
 		);
 	}
