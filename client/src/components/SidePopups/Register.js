@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import React, { Component } from 'react';
+import Button from "./UI/Button";
+import TextField from "./UI/TextField";
 import { connect } from "react-redux";
 import { registerNewUser } from "../../actions/index"
 
@@ -57,57 +57,45 @@ class ConnectedRegister extends Component{
 	render() {
 		return (
 			<div>
+				<h4>Register</h4>
 
 				<TextField
-					FormHelperTextProps={{ style: { color: 'white'} }}
-					placeholder="Enter a username"
+					color="primary"
+					placeholder="Username"
 					onChange={this.handleUsernameChange}
 					value={this.state.username}
-					/>
-				{this.state.username == '' ? null :
-					this.state.usernameAlreadyTaken ?
-					<p style={{color: 'red'}}>
-						Username already taken...
-					</p>
-					:
-					<p style={{color: 'green'}}>
-						Username free !
-					</p>
-				}
-
+					error={this.state.username !== '' && this.state.usernameAlreadyTaken}
+					helperText={this.state.username ? this.state.usernameAlreadyTaken ? "Username already taken...":"Username free !":" "}
+					fullWidth
+				/>
 				<br/>
-
 				<TextField
-					FormHelperTextProps={{ style: { color: 'white'} }}
+					color="primary"
 					type="password"
-					placeholder="Enter a password"
+					placeholder="Password"
+					fullWidth
 					onChange={this.handlePasswordChange}
 					value={this.state.password}
-					/>
-
+					helperText=" "
+				/>
 				<br/>
-
 				<TextField
-					FormHelperTextProps={{ style: { color: 'white'} }}
 					type="password"
 					placeholder="Confirm your password"
+					fullWidth
+					error={this.state.password !== this.state.passwordConfirmation && this.state.passwordConfirmation !== ""}
 					onChange = {this.handlePasswordConfirmationChange}
 					value={this.state.passwordConfirmation}
-					/>
-				{this.state.passwordConfirmation == '' ? null : this.state.passwordConfirmation == this.state.password ? null :
-					<p style={{color: 'red'}}>
-						Passwords do not match.
-					</p>
-				}
-
+					helperText={this.state.passwordConfirmation === " " ? null : this.state.passwordConfirmation == this.state.password ? " " : "Passwords do not match."}
+				/>
 				<br/>
-				<br/>
-
 				<Button
-					variant="contained"
+					fullWidth
 					disabled={!this.state.password || !this.state.username || !this.state.password === '' || this.state.username === '' || this.state.password !== this.state.passwordConfirmation}
-					onClick={(event) => this.handleRegisterButtonClick(event)}>Register</Button>
-
+					onClick={(event) => this.handleRegisterButtonClick(event)}>
+					Register
+				</Button>
+				
 			</div>
 		);
 	}

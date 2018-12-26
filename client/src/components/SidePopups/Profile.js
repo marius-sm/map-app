@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Button from '@material-ui/core/Button';
+import Button from './UI/Button';
 import { connect } from "react-redux";
 import { logout } from "../../actions/index"
 
@@ -14,7 +14,11 @@ function mapDispatchToProps(dispatch) {
 
 function ConnectedLogout(props) {
 	return (
-		<Button variant="contained" onClick={() => {props.logout()}}>Logout</Button>
+		<Button
+			fullWidth
+			onClick={() => props.logout()}>
+			Logout
+		</Button>
 	)
 }
 

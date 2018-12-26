@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import Button from "./UI/Button";
+import TextField from "./UI/TextField";
 import styles from './Login.css';
 import { loginWithPassword, logout } from '../../actions/index';
 import { connect } from 'react-redux';
@@ -49,31 +49,33 @@ class ConnectedLogin extends Component{
 	render() {
 		return (
 			<div className={styles.Login}>
-						<TextField
-							FormHelperTextProps={{ style: { color: 'white'} }}
-							placeholder="Enter your Username"
-							onChange = {this.handleUsernameChange}
-						/>
-						{this.state.username == '' ? null :
-							!this.state.usernameExists ?
-							(this.state.username != '' ? <p style={{color: 'red'}}>Cant find this username...</p> : <p style={{color: 'green'}}>ok</p>)
-							: null
-						}
-
-						<br/>
-						<TextField
-							FormHelperTextProps={{ style: { color: 'white'} }}
-							type="password"
-							placeholder="Enter your Password"
-							onChange = {this.handlePasswordChange}
-						/>
-						<br/><br />
-						<Button
-							variant="contained"
-							onClick={(event) => this.handleLoginButtonClick(event)}
-							disabled={!this.state.username || !this.state.usernameExists || !this.state.password}
-						>Login</Button>
-					</div>
+				<TextField
+					color="primary"
+					placeholder="Username"
+					onChange={this.handleUsernameChange}
+					value={this.state.username}
+					error={this.state.username !== '' && !this.state.usernameExists}
+					helperText={this.state.username ? !this.state.usernameExists ? "Can't find this username...":" ":" "}
+					fullWidth
+				/>
+				<br/>
+				<TextField
+					color="primary"
+					type="password"
+					placeholder="Password"
+					fullWidth
+					onChange={this.handlePasswordChange}
+					value={this.state.password}
+					helperText=" "
+				/>
+				<br/>
+				<Button
+					fullWidth
+					disabled={!this.state.password || !this.state.username || !this.state.usernameExists}
+					onClick={(event) => this.handleLoginButtonClick(event)}>
+					Login
+				</Button>
+			</div>
 		);
 	}
 }
