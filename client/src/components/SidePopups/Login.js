@@ -13,6 +13,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 class ConnectedLogin extends Component{
+
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -67,7 +68,11 @@ class ConnectedLogin extends Component{
 							onChange = {this.handlePasswordChange}
 						/>
 						<br/><br />
-						<Button variant="contained" onClick={(event) => this.handleLoginButtonClick(event)}>Login</Button>
+						<Button
+							variant="contained"
+							onClick={(event) => this.handleLoginButtonClick(event)}
+							disabled={!this.state.username || !this.state.usernameExists || !this.state.password}
+						>Login</Button>
 					</div>
 		);
 	}
