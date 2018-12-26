@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 function mapDispatchToProps(dispatch) {
 	return {
-		loginWithPassword: (username, password) => dispatch(loginWithPassword(username, password)),
+		login: (username, password) => dispatch(loginWithPassword(username, password)),
 		logout: () => dispatch(logout()),
 	};
 }
@@ -42,7 +42,7 @@ class ConnectedLogin extends Component{
 	}
 
 	handleLoginButtonClick() {
-		this.props.loginWithPassword(this.state.username, this.state.password);
+		this.props.login(this.state.username, this.state.password);
 	}
 
 	render() {
