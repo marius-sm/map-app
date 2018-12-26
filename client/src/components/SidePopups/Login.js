@@ -1,57 +1,89 @@
 import React, {Component} from 'react';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import styles from './Login.css'
+import styles from './Login.css';
+import { loginWithPassword, logout } from '../../actions/index';
+import { connect } from 'react-redux';
 
-class Login extends Component{
+function mapDispatchToProps(dispatch) {
+	return {
+		loginWithPassword: (username, password) => dispatch(loginWithPassword(username, password)),
+		logout: () => dispatch(logout()),
+	};
+}
+
+class ConnectedLogin extends Component{
 	constructor(props) {
 		super(props)
 		this.state = {
-			username: 'test_user',
-			password: 'test_pswd',
-			loggedIn: false
+			username: '',
+			password: '',
+			usernameExists: false,
 		}
+		this.handleUsernameChange = this.handleUsernameChange.bind(this)
+		this.handlePasswordChange = this.handlePasswordChange.bind(this)
 		this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this)
+		this.handleCheckButtonClick = this.handleCheckButtonClick.bind(this)
+		this.handleLogoutButtonClick = this.handleLogoutButtonClick.bind(this)
+	}
+
+	handleUsernameChange(event) {
+		this.setState({username: event.target.value}, function() {
+			fetch('/users/exists?username=' + this.state.username , {
+	  			method: 'GET',
+	  			headers: {
+	    			'Accept': 'application/json',
+	    			'Content-Type': 'application/json',
+	  			},
+			}).then(response => response.text()).then(data => this.setState({usernameExists: data == 'true'}))
+		})
+	}
+
+	handlePasswordChange(event) {
+		this.setState({password: event.target.value})
 	}
 
 	handleLoginButtonClick() {
-		fetch('/users', {
-  			method: 'POST',
-  			headers: {
-    			'Accept': 'application/json',
-    			'Content-Type': 'application/json',
-  			},
-  			body: JSON.stringify({
-    			loguser: 'yourValue',
-    			logpassword: 'yourOtherValue',
-  			})
-		})
+		this.props.loginWithPassword(this.state.username, this.state.password);
+	}
+
+	handleCheckButtonClick() {
+
+	}
+
+	handleLogoutButtonClick() {
+		this.props.logout();
 	}
 
 	render() {
 		return (
 			<div className={styles.Login}>
-				<MuiThemeProvider>
-					<div>
 						<TextField
 							FormHelperTextProps={{ style: { color: 'white'} }}
 							placeholder="Enter your Username"
-							onChange = {(event,newValue) => this.setState({username:newValue})}
+							onChange = {this.handleUsernameChange}
 						/>
+						{this.state.username == '' ? null :
+							!this.state.usernameExists ?
+							(this.state.username != '' ? <p style={{color: 'red'}}>Cant find this username...</p> : <p style={{color: 'green'}}>ok</p>)
+							: null
+						}
+
 						<br/>
 						<TextField
 							FormHelperTextProps={{ style: { color: 'white'} }}
 							type="password"
 							placeholder="Enter your Password"
-							onChange = {(event,newValue) => this.setState({password:newValue})}
+							onChange = {this.handlePasswordChange}
 						/>
 						<br/><br />
-						<Button variant="contained" onClick={(event) => this.handleLoginButtonClick(event)} >Login</Button>
+						<Button variant="contained" onClick={(event) => this.handleLoginButtonClick(event)}>Login</Button>
+						<Button variant="contained" onClick={this.handleCheckButtonClick}>Check status</Button>
+						<Button variant="contained" onClick={this.handleLogoutButtonClick}>Logout</Button>
 					</div>
-				</MuiThemeProvider>
-			</div>
 		);
 	}
 }
+
+const Login = connect(null, mapDispatchToProps)(ConnectedLogin);
 export default Login;

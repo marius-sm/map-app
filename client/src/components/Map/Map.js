@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import ReactMapGL, {Marker, Popup, NavigationControl} from 'react-map-gl';
-//import Geocoder from 'react-map-gl-geocoder'
+import { connect } from "react-redux";
 import Pin from './Pin.js'
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoibWFyaXVzc20iLCJhIjoiY2pvZThiOGdqMDB3azNrbG1ybDRwMXFoayJ9.VhpcScQB1k33pHFtw0T9mg';
 
-class Map extends Component {
+const mapStateToProps = state => {
+  return { mapStyle: state.mapStyle };
+};
+
+class ConnectedMap extends Component {
 
 	constructor(props) {
       	super(props);
@@ -23,8 +27,6 @@ class Map extends Component {
         	},
         	events: {}
       	};
-		this.mapRef = React.createRef();
-		console.log(this.mapRef)
     }
 
 	updateViewport = (viewport) => {
@@ -44,14 +46,6 @@ class Map extends Component {
 				mapStyle={mapStyle}
 				onViewportChange={this.updateViewport}
 				mapboxApiAccessToken={MAPBOX_TOKEN} >
-				{/*<Geocoder
-          			mapRef={this.mapRef}
-          			onViewportChange={this.updateViewport}
-          			mapboxApiAccessToken={MAPBOX_TOKEN}
-        		/>*/}
-				{
-
-				}
 				<Marker
 					longitude={marker.longitude}
 					latitude={marker.latitude}
@@ -65,5 +59,7 @@ class Map extends Component {
 		);
 	}
 }
+
+const Map = connect(mapStateToProps)(ConnectedMap);
 
 export default Map;

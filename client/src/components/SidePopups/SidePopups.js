@@ -1,5 +1,5 @@
 import React from 'react';
-import Popup from './Popup'
+import Popup, { ProtectedPopup, AntiProtectedPopup } from './Popup';
 import {IoIosSettings as SettingsIcon,
 		IoIosClose as CloseIcon,
 		IoIosPeople as UsersIcon,
@@ -7,27 +7,40 @@ import {IoIosSettings as SettingsIcon,
 		IoMdArrowDropleft as ArrowIcon,
 		IoIosAdd as AddIcon,
 		IoIosSearch as SearchIcon,
-	  IoIosLogIn as LoginIcon} from "react-icons/io"; //Pour les icones, voir https://react-icons.netlify.com/#/
-import Settings from './Settings'
-import Users from './Users'
-import styles from './SidePopups.css'
-import Login from './Login'
-import Register from './Register'
+	  	IoIosLogIn as LoginIcon,
+		IoIosPerson as ProfileIcon,
+		IoIosUnlock as UnlockedIcon,
+		IoIosLock as LockedIcon} from "react-icons/io"; // Pour les icones, voir https://react-icons.netlify.com/#/
+import Settings from './Settings';
+import Users from './Users';
+import styles from './SidePopups.css';
+import Login from './Login';
+import Register from './Register';
+import Profile from './Profile';
 
 function SidePopups(props) {
 	return (
 		<div className={styles.SidePopups}>
-			<Popup name="Search" title="Search" icon={<SearchIcon/>} />
-			<Popup name="Settings" title="Settings" icon={<SettingsIcon />}>
-				<Settings settings={props.settings} />
+			<Popup name="search" title="Search" icon={<SearchIcon/>}/>
+			<Popup name="settings" title="Settings" icon={<SettingsIcon />}>
+				<Settings/>
 			</Popup>
-			<Popup name="Users" title="Users" icon={<UsersIcon />}>
-				<Users />
+			<Popup name="users" title="Users" icon={<UsersIcon />}>
+
 			</Popup>
-			<Popup name="Login" title="Login" icon={<LoginIcon/>} >
-				<Login/>
+			<AntiProtectedPopup name="login" title="Login" icon={<ProfileIcon/>} >
+				<Login />
 				<Register/>
-			</Popup>
+			</AntiProtectedPopup>
+			<AntiProtectedPopup name="unprotected" title="Anti protected popup" icon={<UnlockedIcon/>} >
+				<p>This popup should only render when the user is NOT logged in.</p>
+			</AntiProtectedPopup>
+			<ProtectedPopup name="profile" title="Profile" icon={<ProfileIcon />}>
+				<Profile />
+			</ProtectedPopup>
+			<ProtectedPopup name="protected" title="Protected popup" icon={<LockedIcon/>}>
+				<p>This popup should only render when the user is logged in.</p>
+			</ProtectedPopup>
 		</div>
 	)
 }

@@ -1,0 +1,8 @@
+command : git config --global --set
+		  git config --global --unset
+
+http.proxy
+m.schmidt-mengin%40enpc.fr:uChon2ci@etuproxy.enpc.fr:3128
+
+https.proxy
+m.schmidt-mengin%40enpc.fr:uChon2ci@etuproxy.enpc.fr:3128
