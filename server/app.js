@@ -1,10 +1,8 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
@@ -14,43 +12,28 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 
-
-// view engine setup
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'jade');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-// serve static files
-app.use(express.static(path.join(__dirname, 'public')));
 
 // connect to MongoDB
 //mongoose.connect('mongodb://Marius:mdpmarius1@ds151631.mlab.com:51631/mapapp', { useNewUrlParser: true });
-mongoose.connect('mongodb://localhost:27017/mapapp', { useNewUrlParser: true });
-var db = mongoose.connection;
+mongoose
+	.connect('mongodb://localhost:27017/mapapp', { useNewUrlParser: true })
+	.then(() => console.log("MongoDB successfully connected"))
+	.catch(err => console.log(err))
 
-// handle mongo error
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-	console.log('Connected to database !')
-})
+var db = mongoose.connection;
 
 // use sessions for tracking logins
 app.use(session({
-  secret: 'notre petit secret',
+  secret: 'notre secret',
   resave: true,
   saveUninitialized: false,
   store: new MongoStore({
     mongooseConnection: db
   })
 }));
-
-// parse incoming requests
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
 
 //app.use('/', indexRouter);
 app.use('/users', usersRouter);

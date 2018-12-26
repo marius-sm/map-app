@@ -1,10 +1,19 @@
 import React, {Component} from 'react';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-//import styles from './Register.css'
+import { connect } from "react-redux";
+import { registerNewUser } from "../../actions/index"
 
-class Register extends Component{
+function mapDispatchToProps(dispatch) {
+	return function(dispatch) {
+		return {
+			register: (username, password) => dispatch(registerNewUser(username, password))
+		}
+	}
+}
+
+class ConnectedRegister extends Component{
+
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -20,21 +29,9 @@ class Register extends Component{
 	}
 
 	handleRegisterButtonClick() {
-		console.log(this.state)
-		fetch('/users/create', {
-  			method: 'POST',
-  			headers: {
-    			'Accept': 'application/json',
-    			'Content-Type': 'application/json',
-  			},
-  			body: JSON.stringify({
-				username: this.state.username,
-				password: this.state.password,
-				passwordConfirmation: this.state.passwordConfirmation
-  			})
-		}, function(res) {
-			console.log(res)
-		})
+		if(this.state.password !== this.state.passwordConfirmation) return;
+		if(this.state.usernameAlreadyTaken) return;
+		this.props.register(this.state.username, this.state.password);
 	}
 
 	handleUsernameChange(event) {
@@ -60,37 +57,61 @@ class Register extends Component{
 	render() {
 		return (
 			<div>
-				<MuiThemeProvider>
-					<div>
-						<TextField
-							FormHelperTextProps={{ style: { color: 'white'} }}
-							placeholder="Enter a username"
-							onChange={this.handleUsernameChange}
-							value={this.state.username}
-						/>
-						{this.state.usernameAlreadyTaken ? <p style={{color: 'red'}}>Username already taken...</p> : <p style={{color: 'green'}}>Username free !</p>}
-						<br/>
-						<TextField
-							FormHelperTextProps={{ style: { color: 'white'} }}
-							type="password"
-							placeholder="Enter a password"
-							onChange={this.handlePasswordChange}
-							value={this.state.password}
-						/>
-						<br/>
-						<TextField
-							FormHelperTextProps={{ style: { color: 'white'} }}
-							type="password"
-							placeholder="Confirm your password"
-							onChange = {this.handlePasswordConfirmationChange}
-							value={this.state.passwordConfirmation}
-						/>
-						<br/><br/>
-						<Button variant="contained" onClick={(event) => this.handleRegisterButtonClick(event)}>Register</Button>
-					</div>
-				</MuiThemeProvider>
+
+				<TextField
+					FormHelperTextProps={{ style: { color: 'white'} }}
+					placeholder="Enter a username"
+					onChange={this.handleUsernameChange}
+					value={this.state.username}
+					/>
+				{this.state.username == '' ? null :
+					this.state.usernameAlreadyTaken ?
+					<p style={{color: 'red'}}>
+						Username already taken...
+					</p>
+					:
+					<p style={{color: 'green'}}>
+						Username free !
+					</p>
+				}
+
+				<br/>
+
+				<TextField
+					FormHelperTextProps={{ style: { color: 'white'} }}
+					type="password"
+					placeholder="Enter a password"
+					onChange={this.handlePasswordChange}
+					value={this.state.password}
+					/>
+
+				<br/>
+
+				<TextField
+					FormHelperTextProps={{ style: { color: 'white'} }}
+					type="password"
+					placeholder="Confirm your password"
+					onChange = {this.handlePasswordConfirmationChange}
+					value={this.state.passwordConfirmation}
+					/>
+				{this.state.passwordConfirmation == '' ? null : this.state.passwordConfirmation == this.state.password ? null :
+					<p style={{color: 'red'}}>
+						Passwords do not match.
+					</p>
+				}
+
+				<br/>
+				<br/>
+
+				<Button
+					variant="contained"
+					disabled={!this.state.password || !this.state.username || !this.state.password === '' || this.state.username === '' || this.state.password !== this.state.passwordConfirmation}
+					onClick={(event) => this.handleRegisterButtonClick(event)}>Register</Button>
+
 			</div>
 		);
 	}
 }
+
+const Register = connect(null, mapDispatchToProps)(ConnectedRegister);
 export default Register;

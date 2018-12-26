@@ -1,40 +1,30 @@
-import React, {Component} from 'react';
-import { Route,NavLink,HashRouter as Router} from "react-router-dom";
-import './App.css';
+import React, {Component} from 'react'
+import { Route,NavLink,BrowserRouter as Router} from 'react-router-dom'
+import './App.css'
 import Map from './Map/Map.js'
-import SidePopups from './SidePopups/SidePopups.js'
-
-function Overlay(props) {
-	return (
-		<div className="overlay">
-			<SidePopups settings={props.settings} users={props.users} />
-		</div>
-	)
-}
+import SidePopups from "./SidePopups/SidePopups.js";
 
 class App extends React.Component {
 
 	constructor(props) {
 		super(props)
-		this.changeMapStyle = this.changeMapStyle.bind(this);
-		this.state = {
-			settings: {
-				mapStyle: "mapbox://styles/mapbox/streets-v9",
-				changeMapStyle: this.changeMapStyle
-			}
-		}
 	}
 
-	changeMapStyle(newMapStyle) {
-		this.setState(previousState => ({settings: {...previousState.settings, mapStyle: newMapStyle}}));
+	componentDidMount() {
+
+		// check if user is authenticated here
+		//this.setState({userIsAuthenticated: false});
+
 	}
 
     render() {
         return (
 		    <Router>
       			<div className="app">
-					<Map mapStyle={this.state.settings.mapStyle} />
-					<Overlay settings={this.state.settings}/>
+					<Map />
+					<div className="overlay">
+						<SidePopups/>
+					</div>
       			</div>
 	  		</Router>
     	)
@@ -57,6 +47,3 @@ Structure du DOM virtuel :
 	</Overlay>
 </App>
 */}
-
-
-//MODIF

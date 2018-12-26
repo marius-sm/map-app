@@ -1,20 +1,31 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { changeMapStyle } from "../../actions/index"
 
-class MapStyleSelector extends Component {
+function mapDispatchToProps(dispatch) {
+	return {
+		changeMapStyle: mapStyle => dispatch(changeMapStyle(mapStyle))
+	}
+}
+
+function mapStateToProps(state) {
+	return {
+		mapStyle: state.mapStyle
+	}
+}
+
+class ConnectedMapStyleSelector extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			value: props.mapStyle ? props.mapStyle : "mapbox://styles/mapbox/streets-v9"
+		}
 		this.handleChange = this.handleChange.bind(this)
-		if(props.settings)
-			this.state = {
-				value: props.settings.mapStyle
-			}
 	}
 
-	handleChange(e) {
-		if(!this.props.settings) return;
-		this.setState({value: e.target.value}, function() {
-			this.props.settings.changeMapStyle(this.state.value);
-		});
+	handleChange(event) {
+		this.props.changeMapStyle(event.target.value)
+		this.setState({value: event.target.value})
 	}
 
 	render() {
@@ -34,6 +45,8 @@ class MapStyleSelector extends Component {
 		)
 	}
 }
+
+const MapStyleSelector = connect(mapStateToProps, mapDispatchToProps)(ConnectedMapStyleSelector);
 
 function Settings(props) {
 	return (
