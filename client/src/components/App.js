@@ -10,25 +10,19 @@ class App extends React.Component {
 		super(props)
 	}
 
-	componentDidMount() {
-
-		// check if user is authenticated here
-		//this.setState({userIsAuthenticated: false});
-
-	}
-
-    render() {
+	render() {
         return (
-		    <Router>
-      			<div className="app">
+			<Router>
+				<div className="app">
 					<Map />
 					<div className="overlay">
 						<SidePopups/>
 					</div>
-      			</div>
-	  		</Router>
+				</div>
+			</Router>
     	)
   	}
+	
 };
 
 export default App;
