@@ -11,20 +11,20 @@ function mapStateToProps(state) {
 // This route is only rendered when the user is logged in
 function ConnectedProtectedRoute({ component: Component, authenticated, ...rest }) {
 	return (
-	   <Route {...rest} render={(props) => (
-	      	authenticated ?
-	        <Component {...props} /> : <Redirect to="/Login" />
-	   )} />
+		<Route {...rest} render={(props) => (
+	    	authenticated ?
+	    	<Component {...props} /> : <Redirect to="/Login" />
+		)} />
 	);
 }
 
 // This route is only rendered when the user is NOT logged in
 function ConnectedAntiProtectedRoute({ component: Component, authenticated, ...rest }) {
 	return (
-	   <Route {...rest} render={(props) => (
-	      	!authenticated ?
-	        <Component {...props} /> : <Redirect to="/" />
-	   )} />
+		<Route {...rest} render={(props) => (
+	    	!authenticated ?
+	    	<Component {...props} /> : <Redirect to="/" />
+		)} />
 	);
 }
 

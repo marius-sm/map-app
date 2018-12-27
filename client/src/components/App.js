@@ -11,7 +11,7 @@ class App extends React.Component {
 	}
 
 	render() {
-        return (
+		return (
 			<Router>
 				<div className="app">
 					<Map />
@@ -22,7 +22,7 @@ class App extends React.Component {
 			</Router>
     	)
   	}
-	
+
 };
 
 export default App;
