@@ -12,9 +12,16 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
+function mapStateToProps(state) {
+	return {
+		error: state.loginError,
+	}
+}
+
 class ConnectedLogin extends Component{
 
 	constructor(props) {
+		console.log(props.error)
 		super(props)
 		this.state = {
 			username: '',
@@ -34,7 +41,9 @@ class ConnectedLogin extends Component{
 	    			'Accept': 'application/json',
 	    			'Content-Type': 'application/json',
 	  			},
-			}).then(response => response.text()).then(data => this.setState({usernameExists: data == 'true'}))
+			})
+			.then(response => response.text())
+			.then(data => this.setState({usernameExists: data == 'true'}))
 		})
 	}
 
@@ -54,7 +63,7 @@ class ConnectedLogin extends Component{
 					placeholder="Username"
 					onChange={this.handleUsernameChange}
 					value={this.state.username}
-					error={this.state.username !== '' && !this.state.usernameExists}
+					error={(this.state.username !== '' && !this.state.usernameExists) || this.props.error}
 					helperText={this.state.username ? !this.state.usernameExists ? "Can't find this username...":" ":" "}
 					fullWidth
 				/>
@@ -64,21 +73,23 @@ class ConnectedLogin extends Component{
 					type="password"
 					placeholder="Password"
 					fullWidth
+					error={this.props.error}
 					onChange={this.handlePasswordChange}
 					value={this.state.password}
-					helperText=" "
+					helperText={this.props.error ? "Wrong password" : " "}
 				/>
-				<br/>
+			<br/><div style={{height: 8, width:"100%"}}></div>
 				<Button
 					fullWidth
 					disabled={!this.state.password || !this.state.username || !this.state.usernameExists}
 					onClick={(event) => this.handleLoginButtonClick(event)}>
 					Login
 				</Button>
+				<br/>
 			</div>
 		);
 	}
 }
 
-const Login = connect(null, mapDispatchToProps)(ConnectedLogin);
+const Login = connect(mapStateToProps, mapDispatchToProps)(ConnectedLogin);
 export default Login;

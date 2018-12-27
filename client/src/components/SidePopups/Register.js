@@ -88,14 +88,14 @@ class ConnectedRegister extends Component{
 					value={this.state.passwordConfirmation}
 					helperText={this.state.passwordConfirmation === " " ? null : this.state.passwordConfirmation == this.state.password ? " " : "Passwords do not match."}
 				/>
-				<br/>
+				<br/><div style={{height: 8, width:"100%"}}></div>
 				<Button
 					fullWidth
 					disabled={!this.state.password || !this.state.username || !this.state.password === '' || this.state.username === '' || this.state.password !== this.state.passwordConfirmation}
 					onClick={(event) => this.handleRegisterButtonClick(event)}>
 					Register
 				</Button>
-				
+
 			</div>
 		);
 	}

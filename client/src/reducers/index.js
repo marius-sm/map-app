@@ -5,6 +5,7 @@ const initialState = {
 		username: '',
 		jwtToken: '',
 	},
+	loginError: false,
 };
 
 function rootReducer(state = initialState, action) {
@@ -20,7 +21,14 @@ function rootReducer(state = initialState, action) {
 			loggedInUser: {
 				username: action.username,
 				jwtToken: action.token,
-			}
+			},
+			loginError: false,
+    	});
+		return newState;
+	}
+	if (action.type === "LOGIN_FAILED") {
+		const newState = Object.assign({}, state, {
+      		loginError: true,
     	});
 		return newState;
 	}
@@ -30,7 +38,7 @@ function rootReducer(state = initialState, action) {
 			loggedInUser: {
 				username: '',
 				jwtToken: '',
-			}
+			},
     	});
 		return newState;
 	}
