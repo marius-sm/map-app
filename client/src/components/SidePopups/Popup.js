@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 import { Switch,Route,NavLink,HashRouter as Router} from "react-router-dom";
 import {IoIosClose as CloseIcon} from "react-icons/io";
-import styles from './SidePopups.css';
-import ProtectedRoute, { AntiProtectedRoute } from '../ProtectedRoute'
+import styles from "./SidePopups.css";
+import ProtectedRoute, { AntiProtectedRoute } from "../ProtectedRoute";
 
 function Toggle(props) {
 	const name = props.name ? props.name : 'noname';

@@ -11,7 +11,7 @@ import {IoIosSettings as SettingsIcon,
 		IoIosPerson as ProfileIcon,
 		IoIosUnlock as UnlockedIcon,
 		IoIosLock as LockedIcon} from "react-icons/io"; // Pour les icones, voir https://react-icons.netlify.com/#/
-import Settings from './Settings';
+import Settings from "./Settings";
 import Users from './Users';
 import styles from './SidePopups.css';
 import Login from './Login';
