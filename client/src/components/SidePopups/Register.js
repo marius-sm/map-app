@@ -22,10 +22,11 @@ class ConnectedRegister extends Component{
 			passwordConfirmation: '',
 			usernameAlreadyTaken: true
 		}
-		this.handleRegisterButtonClick = this.handleRegisterButtonClick.bind(this)
-		this.handleUsernameChange = this.handleUsernameChange.bind(this)
-		this.handlePasswordChange = this.handlePasswordChange.bind(this)
-		this.handlePasswordConfirmationChange = this.handlePasswordConfirmationChange.bind(this)
+		this.handleRegisterButtonClick = this.handleRegisterButtonClick.bind(this);
+		this.handleUsernameChange = this.handleUsernameChange.bind(this);
+		this.handlePasswordChange = this.handlePasswordChange.bind(this);
+		this.handlePasswordConfirmationChange = this.handlePasswordConfirmationChange.bind(this);
+		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 
 	handleRegisterButtonClick() {
@@ -52,6 +53,13 @@ class ConnectedRegister extends Component{
 
 	handlePasswordConfirmationChange(event) {
 		this.setState({passwordConfirmation: event.target.value})
+	}
+
+	handleKeyPress(event) {
+		if(event.key === "Enter") {
+			if(!this.state.usernameAlreadyTaken)
+				this.props.register(this.state.username, this.state.password);
+		}
 	}
 
 	render() {
@@ -87,6 +95,7 @@ class ConnectedRegister extends Component{
 					onChange = {this.handlePasswordConfirmationChange}
 					value={this.state.passwordConfirmation}
 					helperText={this.state.passwordConfirmation === " " ? null : this.state.passwordConfirmation == this.state.password ? " " : "Passwords do not match."}
+					onKeyPress={this.handleKeyPress}
 				/>
 				<br/><div style={{height: 8, width:"100%"}}></div>
 				<Button

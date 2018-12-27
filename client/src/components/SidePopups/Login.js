@@ -21,16 +21,16 @@ function mapStateToProps(state) {
 class ConnectedLogin extends Component{
 
 	constructor(props) {
-		console.log(props.error)
 		super(props)
 		this.state = {
 			username: '',
 			password: '',
 			usernameExists: false,
 		}
-		this.handleUsernameChange = this.handleUsernameChange.bind(this)
-		this.handlePasswordChange = this.handlePasswordChange.bind(this)
-		this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this)
+		this.handleUsernameChange = this.handleUsernameChange.bind(this);
+		this.handlePasswordChange = this.handlePasswordChange.bind(this);
+		this.handleLoginButtonClick = this.handleLoginButtonClick.bind(this);
+		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 
 	handleUsernameChange(event) {
@@ -55,6 +55,13 @@ class ConnectedLogin extends Component{
 		this.props.login(this.state.username, this.state.password);
 	}
 
+	handleKeyPress(event) {
+		if(event.key === "Enter") {
+			if(this.state.usernameExists)
+				this.props.login(this.state.username, this.state.password);
+		}
+	}
+
 	render() {
 		return (
 			<div className={styles.Login}>
@@ -77,6 +84,7 @@ class ConnectedLogin extends Component{
 					onChange={this.handlePasswordChange}
 					value={this.state.password}
 					helperText={this.props.error ? "Wrong password" : " "}
+					onKeyPress={this.handleKeyPress}
 				/>
 			<br/><div style={{height: 8, width:"100%"}}></div>
 				<Button
