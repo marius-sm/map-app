@@ -21,32 +21,33 @@ var UserSchema = new mongoose.Schema({
 })
 
 //authenticate input against database
-UserSchema.statics.authenticate = function (username, password, callback) {
+UserSchema.statics.authenticate = function(username, password, callback) {
 	User.findOne({ username: username })
-		.exec(function (err, user) {
-			if (err) {
-				return callback(err)
+		.exec(function(error, user) {
+			if(error) {
+				callback({message: "Internal server error", status: 500}, null);
 			} else if (!user) {
-				var err = new Error('User not found.');
-				err.status = 401;
-				return callback(err);
+				callback({message: "User not found", status: 400}, null)
 			}
-			bcrypt.compare(password, user.password, function (err, result) {
-				if (result === true) {
-					return callback(null, user);
+			bcrypt.compare(password, user.password, function(error, result) {
+				if(error) {
+					callback({message: "Internal server error", status: 500}, null)
+				}
+				else if(result === true) {
+					callback(null, user)
 				} else {
-					return callback();
+					callback({message: "Wrong password", status: 401}, null)
 				}
 			})
 		});
 }
 
 //hashing a password before saving it to the database
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', function(next) {
 	var user = this;
-	bcrypt.hash(user.password, 10, function (err, hash) {
-		if (err) {
-			return next(err);
+	bcrypt.hash(user.password, 10, function(error, hash) {
+		if(error) {
+			return next(error);
 		}
 		user.password = hash;
 		next();

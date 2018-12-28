@@ -3,6 +3,7 @@ const LOGIN_SUCCEEDED = "LOGIN_SUCCEEDED";
 const LOGIN_FAILED = "LOGIN_FAILED";
 const LOGOUT_SUCCEEDED = "LOGOUT_SUCCEEDED";
 const LOGOUT_FAILED = "LOGOUT_FAILED";
+const LOGIN_WITH_TOKEN_FAILED = "LOGIN_WITH_TOKEN_FAILED";
 
 export function changeMapStyle(mapStyle) {
 	return { type: CHANGE_MAP_STYLE, mapStyle };
@@ -12,11 +13,11 @@ export function loginSucceeded(username, token) {
 	return { type: LOGIN_SUCCEEDED, username, token }
 }
 
-export function loginFailed() {
-	return { type: LOGIN_FAILED }
+export function loginFailed(error) {
+	return { type: LOGIN_FAILED, error }
 }
 
-export function loginWithPassword(username, password) {
+export function loginWithPassword(username, password, callback) {
 	return function(dispatch) {
 		fetch('/users/login', {
   			method: 'POST',
@@ -27,16 +28,18 @@ export function loginWithPassword(username, password) {
   			body: JSON.stringify({
     			username: username,
     			password: password,
-  			})
+  			}),
 		})
 		.then(response => response.json())
 		.then(response => {
-			if(response.success) {
+			if(!response.error) {
 				localStorage.setItem("jwtAuthenticationToken", response.token);
 				localStorage.setItem("username", username);
 				dispatch(loginSucceeded(username, response.token));
+				if(typeof callback === "function") callback(false);
 			} else {
-				dispatch(loginFailed());
+				dispatch(loginFailed(response.error));
+				if(typeof callback === "function") callback(response.error);
 			}
 		})
 	}
@@ -54,10 +57,10 @@ export function loginWithToken(username, token) {
 		})
 		.then(response => response.json())
 		.then(response => {
-			if(response.result === true) {
+			if(!response.error) {
 				dispatch(loginSucceeded(username, token))
 			} else {
-				dispatch(loginFailed());
+				dispatch(loginFailed(response.error));
 			}
 		});
 	}
@@ -90,7 +93,7 @@ export function logout() {
 	}
 }
 
-export function registerNewUser(username, password) {
+export function registerNewUser(username, password, callback) {
 	return function(dispatch) {
 		fetch('/users/create', {
   			method: 'POST',
@@ -106,8 +109,9 @@ export function registerNewUser(username, password) {
 		.then(response => response.json())
 		.then(response => {
 			if(response.error) {
-				alert('There was an error... Please try again.')
+				if(typeof callback === "function") callback(response.error);
 			} else {
+				if(typeof callback === "function") callback(false);
 				dispatch(loginWithPassword(username, password));
 			}
 		});

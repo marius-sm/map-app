@@ -27,16 +27,17 @@ function Arrow(props) {
 }
 
 function Popup(props) { // Expected props : name, title, icon and children (passed as effective children)
-	const title = props.title ? props.title : 'Error, Popup called without title';
 	const name = props.name ? props.name : 'noname';
-	const needsAuthentication = props.needsAuthentication ? props.needsAuthentication : false
 	const children = props.children ? props.children : <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.</p>
 	const content = () =>
 	(
 		<div className={styles.Content}>
-			<div className={styles.ContentTitle}>
-				<h4>{title}</h4>
-			</div>
+			{ props.title ?
+				<div className={styles.ContentTitle}>
+					<h4>{props.title}</h4>
+				</div>
+				: null
+			}
 			<div className={styles.ContentContainer}>
 				{children}
 			</div>

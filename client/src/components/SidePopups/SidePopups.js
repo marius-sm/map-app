@@ -26,9 +26,8 @@ function SidePopups(props) {
 				<Settings/>
 			</Popup>
 			<Popup name="users" title="Users" icon={<UsersIcon />}>
-
 			</Popup>
-			<AntiProtectedPopup name="login" title="Login" icon={<ProfileIcon/>} >
+			<AntiProtectedPopup name="login" title="" icon={<ProfileIcon/>} >
 				<Login />
 				<Register/>
 			</AntiProtectedPopup>

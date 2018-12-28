@@ -9,13 +9,13 @@ const initialState = {
 };
 
 function rootReducer(state = initialState, action) {
-  	if (action.type === "CHANGE_MAP_STYLE") {
+  	if(action.type === "CHANGE_MAP_STYLE") {
 		const newState = Object.assign({}, state, {
       		mapStyle: action.mapStyle
     	});
     	return newState;
   	}
-	if (action.type === "LOGIN_SUCCEEDED") {
+	if(action.type === "LOGIN_SUCCEEDED") {
 		const newState = Object.assign({}, state, {
       		userIsLoggedIn: true,
 			loggedInUser: {
@@ -26,19 +26,20 @@ function rootReducer(state = initialState, action) {
     	});
 		return newState;
 	}
-	if (action.type === "LOGIN_FAILED") {
+	if(action.type === "LOGIN_FAILED") {
 		const newState = Object.assign({}, state, {
-      		loginError: true,
+      		loginError: action.error,
     	});
 		return newState;
 	}
-	if (action.type === "LOGOUT_SUCCEEDED") {
+	if(action.type === "LOGOUT_SUCCEEDED") {
 		const newState = Object.assign({}, state, {
       		userIsLoggedIn: false,
 			loggedInUser: {
 				username: '',
 				jwtToken: '',
 			},
+			loginError: false
     	});
 		return newState;
 	}

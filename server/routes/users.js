@@ -1,5 +1,5 @@
 const express = require('express');
-const User = require('../models/user');
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
@@ -7,29 +7,33 @@ const router = express.Router();
 // insert new user into database
 router.post('/create', function (req, res) {
 	console.log('users/create received post request')
-
 	if (req.body.username && req.body.password ) {
-
 		console.log('trying to create new user')
-
 		var userData = {
 			username: req.body.username,
 			password: req.body.password,
 		}
-
-		User.create(userData, function (error, user) {
-			if (error) {
+		User.create(userData, function(error, user) {
+			if(error) {
 				console.log(error)
-				return res.status(500).json({error: 'Server error while creating user'});
+				return res.json({
+					error: {
+						message: "Server error while creating user",
+					},
+				}).status(500);
 			} else {
 				console.log('new user successfully created !')
-				return res.status(201).send({message: 'user created', error: null});
+				return res.status(201).json({error: false});
 			}
 		});
 
 	} else {
 		console.log('All fields required')
-		return res.status(400).json({error: 'All fields required'});
+		return res.json({
+			error: {
+				message: "No username or password provided",
+			},
+		}).status(400);
 	}
 })
 
@@ -37,23 +41,22 @@ router.post('/create', function (req, res) {
 router.post('/login', function(req, res) {
 	if(req.body.username && req.body.password) {
 		console.log('Trying to login')
-		User.authenticate(req.body.username, req.body.password, function (error, user) {
-			if (error || !user) {
-				console.log('Wrong username or password.')
-				res.status(401).json({
-					success: false
-				})
+		User.authenticate(req.body.username, req.body.password, function(error, user) {
+			if(error) {
+				res.json({
+					error: error
+				}).status(error.status);
+			} else if(!user) {
+				res.json({
+					error: {message: "Internal server error", status: 500}
+				}).status(500);
 			} else {
-				let token = jwt.sign({ id: user.id, username: user.username }, 'un secret', { expiresIn: 3600 })
-            	res.status(200).json({
-                	success: true,
-                	err: null,
-                	token
-            	})
-				console.log("token send")
-				console.log("user _id : " + user._id)
-				console.log('login successful')
+				const token = jwt.sign({ id: user.id, username: user.username }, 'un secret', { expiresIn: 3600 });
+				res.json({
+					token
+				}).status(200);
 			}
+			return;
 		});
 	} else {
 		console.log('All fields required')
@@ -106,23 +109,32 @@ router.get('/token_is_valid_and_matches_username', function(req, res) {
 		username = req.query.username;
         token = req.headers.authorization.split(' ')[1];
     } else {
-		return res.status(400).json({result: false})
+		return res.json({
+			error: {message: "No token provided"}
+		}).status(400);
 	}
 	jwt.verify(token, 'un secret', function(error, decoded) {
 		if(error) {
-			console.log('token invalid');
-			res.status(200).json({result: false});
+			if(error.name === "TokenExpiredError") {
+				return res.json({
+					error: {message: "Login expired"}
+				}).status(401);
+			}
+			return res.json({
+				error: {message: "Token invalid"}
+			}).status(401);
 		} else {
 			console.log(decoded);
 			if(decoded.username === username) {
-				console.log('token valid and matches username');
-				res.status(200).json({result: true});
+				return res.json({
+					error: false,
+				}).status(200);
 			}
 			else {
-				res.status(401).json({result: false});
+				return res.json({
+					error: {message: "Token invalid"}
+				}).status(401);
 			}
-
-
 		}
 	});
 });

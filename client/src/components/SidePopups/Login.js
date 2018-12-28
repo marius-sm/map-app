@@ -5,9 +5,16 @@ import styles from './Login.css';
 import { loginWithPassword, logout } from '../../actions/index';
 import { connect } from 'react-redux';
 
+function Message(props) {
+	if(!props.children) return null;
+	return (
+		<span style={{color: "red", fontSize: "0.8em"}}>{props.children}</span>
+	);
+}
+
 function mapDispatchToProps(dispatch) {
 	return {
-		login: (username, password) => dispatch(loginWithPassword(username, password)),
+		login: (username, password, callback) => dispatch(loginWithPassword(username, password, callback)),
 		logout: () => dispatch(logout()),
 	};
 }
@@ -26,6 +33,7 @@ class ConnectedLogin extends Component{
 			username: '',
 			password: '',
 			usernameExists: false,
+			responseErrorMessage: "",
 		}
 		this.handleUsernameChange = this.handleUsernameChange.bind(this);
 		this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -34,43 +42,60 @@ class ConnectedLogin extends Component{
 	}
 
 	handleUsernameChange(event) {
-		this.setState({username: event.target.value}, function() {
-			fetch('/users/exists?username=' + this.state.username , {
-	  			method: 'GET',
-	  			headers: {
-	    			'Accept': 'application/json',
-	    			'Content-Type': 'application/json',
-	  			},
-			})
-			.then(response => response.text())
-			.then(data => this.setState({usernameExists: data == 'true'}))
+		this.setState({
+			username: event.target.value,
+			responseErrorMessage: ""
+		});
+		fetch('/users/exists?username=' + event.target.value, {
+	  		method: 'GET',
+	  		headers: {
+	   			'Accept': 'application/json',
+				'Content-Type': 'application/json',
+	  		},
 		})
+		.then(response => response.text())
+		.then(response => {
+			if(response === "true") {
+				this.setState({usernameExists: true});
+			} else {
+				this.setState({usernameExists: false});
+			}
+		});
 	}
 
 	handlePasswordChange(event) {
-		this.setState({password: event.target.value})
+		this.setState({
+			password: event.target.value,
+			responseErrorMessage: ""
+		});
 	}
 
 	handleLoginButtonClick() {
-		this.props.login(this.state.username, this.state.password);
+		let _this = this;
+		this.props.login(this.state.username, this.state.password, function(error) {
+			_this.setState({responseErrorMessage: error ? error.message : ""});
+		});
 	}
 
 	handleKeyPress(event) {
 		if(event.key === "Enter") {
-			if(this.state.usernameExists)
-				this.props.login(this.state.username, this.state.password);
+			let _this = this;
+			this.props.login(this.state.username, this.state.password, function(error) {
+				_this.setState({responseErrorMessage: error ? error.message : ""});
+			});
 		}
 	}
 
 	render() {
 		return (
 			<div className={styles.Login}>
+				<h4 style={{display: "inline-block", marginRight: 10}}>Login</h4><Message>{this.state.responseErrorMessage}</Message>
 				<TextField
 					color="primary"
 					placeholder="Username"
 					onChange={this.handleUsernameChange}
 					value={this.state.username}
-					error={(this.state.username !== '' && !this.state.usernameExists) || this.props.error}
+					error={(this.state.username !== '' && !this.state.usernameExists)}
 					helperText={this.state.username ? !this.state.usernameExists ? "Can't find this username...":" ":" "}
 					fullWidth
 				/>
@@ -80,10 +105,10 @@ class ConnectedLogin extends Component{
 					type="password"
 					placeholder="Password"
 					fullWidth
-					error={this.props.error}
+					error={this.state.responseErrorMessage === "Wrong password" ? true : false}
+					helperText={this.state.responseErrorMessage === "Wrong password" ? "Wrong password" : " "}
 					onChange={this.handlePasswordChange}
 					value={this.state.password}
-					helperText={this.props.error ? "Wrong password" : " "}
 					onKeyPress={this.handleKeyPress}
 				/>
 			<br/><div style={{height: 8, width:"100%"}}></div>
