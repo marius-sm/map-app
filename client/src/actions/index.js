@@ -3,7 +3,6 @@ const LOGIN_SUCCEEDED = "LOGIN_SUCCEEDED";
 const LOGIN_FAILED = "LOGIN_FAILED";
 const LOGOUT_SUCCEEDED = "LOGOUT_SUCCEEDED";
 const LOGOUT_FAILED = "LOGOUT_FAILED";
-const LOGIN_WITH_TOKEN_FAILED = "LOGIN_WITH_TOKEN_FAILED";
 
 export function changeMapStyle(mapStyle) {
 	return { type: CHANGE_MAP_STYLE, mapStyle };
