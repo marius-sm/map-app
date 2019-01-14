@@ -17,6 +17,7 @@ import styles from './SidePopups.css';
 import Login from './Login';
 import Register from './Register';
 import Profile from './Profile';
+import AddPOI from './AddPOI';
 
 function SidePopups(props) {
 	return (
@@ -40,6 +41,9 @@ function SidePopups(props) {
 			<ProtectedPopup name="protected" title="Protected popup" icon={<LockedIcon/>}>
 				<p>This popup should only render when the user is logged in.</p>
 			</ProtectedPopup>
+            <Popup name="add-poi" title="Add a point of interest" icon={<AddIcon />}>
+                <AddPOI />
+            </Popup>
 		</div>
 	)
 }

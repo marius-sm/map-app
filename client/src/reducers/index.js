@@ -43,6 +43,17 @@ function rootReducer(state = initialState, action) {
     	});
 		return newState;
 	}
+    if(action.type === "MOVE_DRAGGABLE_MARKER") {
+		const newState = Object.assign({}, state, {
+      		userIsLoggedIn: false,
+			loggedInUser: {
+				username: '',
+				jwtToken: '',
+			},
+			loginError: false
+    	});
+		return newState;
+	}
   	return state;
 }
 export default rootReducer;

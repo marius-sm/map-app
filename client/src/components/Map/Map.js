@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import ReactMapGL, {Marker, Popup, NavigationControl} from 'react-map-gl';
 import { connect } from "react-redux";
-import Pin from './Pin.js'
+import Pin from './Pin'
+import DraggableMarker from './DraggableMarker'
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoibWFyaXVzc20iLCJhIjoiY2pvZThiOGdqMDB3azNrbG1ybDRwMXFoayJ9.VhpcScQB1k33pHFtw0T9mg';
 
@@ -13,6 +14,7 @@ class ConnectedMap extends Component {
 
 	constructor(props) {
       	super(props);
+        const draggableMarker = <DraggableMarker visible="false"/>
       	this.state = {
         	viewport: {
           		latitude: 48.8585,
@@ -25,6 +27,8 @@ class ConnectedMap extends Component {
           		latitude: 37.785164,
           		longitude: -100,
         	},
+            markers: [],
+            userAddedPOIs: [],
         	events: {}
       	};
     }
@@ -52,6 +56,7 @@ class ConnectedMap extends Component {
 					draggable>
 					<Pin size={20} />
 				</Marker>
+                <DraggableMarker longitude={2.34} latitude={48.86}/>
 				<Popup latitude={37.78} longitude={-122.41} closeButton={true} closeOnClick={true} anchor="top">
 		      		<div>Point d intérêt</div>
 		    	</Popup>
