@@ -6,6 +6,7 @@ const initialState = {
 		jwtToken: '',
 	},
 	loginError: false,
+    draggableMarkerCoordinates: [2.34, 48.86]
 };
 
 function rootReducer(state = initialState, action) {
@@ -45,12 +46,7 @@ function rootReducer(state = initialState, action) {
 	}
     if(action.type === "MOVE_DRAGGABLE_MARKER") {
 		const newState = Object.assign({}, state, {
-      		userIsLoggedIn: false,
-			loggedInUser: {
-				username: '',
-				jwtToken: '',
-			},
-			loginError: false
+      		draggableMarkerCoordinates: action.newCoordinates
     	});
 		return newState;
 	}
