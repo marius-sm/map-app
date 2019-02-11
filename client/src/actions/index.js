@@ -1,3 +1,5 @@
+import store from '../store';
+
 const CHANGE_MAP_STYLE = "CHANGE_MAP_STYLE";
 const LOGIN_SUCCEEDED = "LOGIN_SUCCEEDED";
 const LOGIN_FAILED = "LOGIN_FAILED";
@@ -62,7 +64,7 @@ export function loginWithToken(username, token) {
 			} else {
 				dispatch(loginFailed(response.error));
 			}
-		});
+		}).catch(function(error) {console.log(error)})
 	}
 }
 
@@ -120,4 +122,30 @@ export function registerNewUser(username, password, callback) {
 
 export function moveDraggableMarker(newCoordinates) {
     return { type: MOVE_DRAGGABLE_MARKER, newCoordinates }
+}
+
+export function addPOI(coords, name) {
+    return function(dispatch) {
+        console.log("adding POI at longitude " + coords[0] + ", latitude " + coords[1] + " with name " + name)
+        const username = store.getState().loggedInUser.username;
+        const token = store.getState().loggedInUser.jwtToken;
+        console.log(username + " " + token)
+        fetch('/POI/create', {
+  			method: 'POST',
+  			headers: {
+    			'Accept': 'application/json',
+    			'Content-Type': 'application/json',
+  			},
+  			body: JSON.stringify({
+				name: name,
+				longitude: coords[0],
+                latitude: coords[1],
+                token: token
+  			}),
+		})
+		/*.then(response => response.json())
+		.then(response => {
+
+		});*/
+    }
 }

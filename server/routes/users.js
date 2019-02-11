@@ -79,6 +79,21 @@ router.get('/exists', function (req, res) {
 	})
 })
 
+function verifyToken(token, callback) {
+    jwt.verify(token, 'un secret', function(error, decoded) {
+		if(error) {
+            console.log('token invalid');
+            callback({result: true, error: error, decoded: decoded});
+            return {result: false, error: error, decoded: decoded};
+		} else {
+			console.log(decoded);
+			console.log('token valid');
+            callback({result: true, error: null, decoded: decoded});
+            return {result: true, error: null, decoded: decoded};
+		}
+	})
+}
+
 // check if user is logged in
 router.get('/check', function (req, res) {
 	console.log('get /users/check')
@@ -89,16 +104,16 @@ router.get('/check', function (req, res) {
 		return res.status(400).json({loggedIn: false})
 	}
 	console.log('token : ' + token)
-	jwt.verify(token, 'un secret', function(error, decoded) {
-		if(error) {
-			console.log('token invalid');
-			res.status(200).json({loggedIn: false});
-		} else {
-			console.log(decoded);
-			console.log('token valid');
-			res.status(200).json({loggedIn: true})
-		}
-	})
+    const verification = verifyToken(token, function(result) {
+        if(result.error) {
+    		res.status(401).json({loggedIn: false});
+    	} else {
+    		console.log(decoded);
+    		console.log('token valid');
+    		res.status(200).json({loggedIn: true})
+    	}
+    });
+
 });
 
 // check of the jwt token belongs to given user
@@ -142,6 +157,6 @@ router.get('/token_is_valid_and_matches_username', function(req, res) {
 // logout
 router.get('/logout', function (req, res, next) {
 
-})
+});
 
-module.exports = router;
+module.exports = {router, verifyToken};

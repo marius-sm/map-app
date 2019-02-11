@@ -1,8 +1,22 @@
 import React, {Component} from 'react';
 import Button from "./UI/Button";
 import TextField from "./UI/TextField";
+import { addPOI } from '../../actions/index';
+import { connect } from 'react-redux';
 
-class AddPOI extends Component {
+function mapDispatchToProps(dispatch) {
+	return {
+		addPOI: (coords, name) => dispatch(addPOI(coords, name)),
+	};
+}
+
+function mapStateToProps(state) {
+    return {
+        draggableMarkerCoordinates: state.draggableMarkerCoordinates
+    }
+}
+
+class ConnectedAddPOI extends Component {
     constructor(props) {
 		super(props)
 		this.state = {
@@ -19,12 +33,14 @@ class AddPOI extends Component {
 	}
 
     handleValidateClick() {
-
+        this.props.addPOI(this.props.draggableMarkerCoordinates, this.state.POIName)
 	}
 
     render() {
 		return (
 			<div className={null}>
+                <p>{"Longitude : " + Math.round(this.props.draggableMarkerCoordinates[0]*10000)/10000}</p>
+                <p>{"Latitude : " + Math.round(this.props.draggableMarkerCoordinates[1]*10000)/10000}</p>
 				<TextField
 					color="primary"
 					type="text"
@@ -46,4 +62,5 @@ class AddPOI extends Component {
 	}
 }
 
+const AddPOI = connect(mapStateToProps, mapDispatchToProps)(ConnectedAddPOI)
 export default AddPOI;
