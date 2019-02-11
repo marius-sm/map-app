@@ -31,10 +31,27 @@ class ConnectedMap extends Component {
             userAddedPOIs: [],
         	events: {}
       	};
+        this.updateViewport = this.updateViewport.bind(this)
+        this.mapRef = React.createRef()
+        this.is_mounted = false;
     }
 
 	updateViewport = (viewport) => {
+        if(this.is_mounted) {
+            const bounds = this.map.getBounds();
+            console.log({
+                north: bounds._ne.lat,
+                south: bounds._sw.lat,
+                west: bounds._sw.lng,
+                east: bounds._ne.lng,
+            });
+        }
       	this.setState({viewport});
+    }
+
+    componentDidMount() {
+        this.is_mounted = true;
+        this.map = this.mapRef.getMap();
     }
 
 	render() {
@@ -44,6 +61,7 @@ class ConnectedMap extends Component {
 
 		return (
 			<ReactMapGL
+                ref={ map => this.mapRef = map }
 				{...viewport}
 				width="100%"
 				height="100%"
