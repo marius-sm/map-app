@@ -52,4 +52,33 @@ router.post('/create', function (req, res) {
     }
 });
 
+router.post('/get', function(req, res) {
+    if(req.body.viewport) {
+        const viewportPolygon = {
+            type: 'Polygon',
+            coordinates: [[
+                [req.body.viewport.west, req.body.viewport.north],
+                [req.body.viewport.east, req.body.viewport.north],
+                [req.body.viewport.east, req.body.viewport.south],
+                [req.body.viewport.west, req.body.viewport.south],
+                [req.body.viewport.west, req.body.viewport.north]
+            ]]
+        };
+        console.log(viewportPolygon.coordinates)
+        POI.find({
+            location: {
+                $geoWithin: {
+                    $geometry: viewportPolygon
+                }
+            }
+        }).then(obj => {
+            console.log(obj);
+            res.json(obj);
+        });
+    }
+    else {
+        res.status(400).json({error: true});
+    }
+});
+
 module.exports = router;

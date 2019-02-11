@@ -149,3 +149,21 @@ export function addPOI(coords, name) {
 		});*/
     }
 }
+
+export function fetchPOIs(queryObject, callback) {
+    return function(dispatch) {
+        if(!queryObject) return undefined;
+        fetch("POI/get", {
+            method: 'POST',
+            headers: {
+    			'Accept': 'application/json',
+    			'Content-Type': 'application/json',
+  			},
+  			body: JSON.stringify({
+				viewport: queryObject.viewport,
+  			})
+        }).then(res => res.json())
+        .then(json => callback(json))
+        .catch(err => console.log(err));
+    }
+}
