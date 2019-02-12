@@ -38,6 +38,8 @@ class ConnectedMap extends Component {
             userAddedPOIs: [],
         	events: {},
             visiblePOIs: [],
+            mouseDown: false,
+            lastFetchPOIsTime: new Date().getTime()
       	};
         this.updateViewport = this.updateViewport.bind(this);
         this.fetchPOIs = this.fetchPOIs.bind(this);
@@ -47,13 +49,11 @@ class ConnectedMap extends Component {
 
 	updateViewport = (viewport) => {
         if(this.is_mounted) {
-            const bounds = this.map.getBounds();
-            /*console.log({
-                north: bounds._ne.lat,
-                south: bounds._sw.lat,
-                west: bounds._sw.lng,
-                east: bounds._ne.lng,
-            });*/
+            const time = new Date().getTime();
+            if(time - this.state.lastFetchPOIsTime > 500) {
+                this.fetchPOIs();
+                this.setState({lastFetchPOIsTime: time})
+            }
         }
       	this.setState({viewport});
     }
@@ -61,6 +61,7 @@ class ConnectedMap extends Component {
     componentDidMount() {
         this.is_mounted = true;
         this.map = this.mapRef.getMap();
+        this.fetchPOIs();
     }
 
     fetchPOIs() {
@@ -74,7 +75,7 @@ class ConnectedMap extends Component {
                 east: bounds._ne.lng,
             }
         }, function(json) {
-            _this.setState({visiblePOIs: json});
+            _this.setState({visiblePOIs: json, lastFetchPOIsTime: new Date().getTime()});
         });
         console.log("fetching")
     }
