@@ -96,8 +96,8 @@ class ConnectedMap extends Component {
 				mapboxApiAccessToken={MAPBOX_TOKEN} >
                 <div>
                     {this.state.visiblePOIs.map(function(POI, i){
-                        return (<Marker longitude={POI.location.coordinates[0]} latitude={POI.location.coordinates[1]}>
-                                <Pin size={20} />
+                        return (<Marker key={i} longitude={POI.location.coordinates[0]} latitude={POI.location.coordinates[1]}>
+                                <Pin size={20} className="POIPin"/>
                                 </Marker>)
                     })}
 				<Marker

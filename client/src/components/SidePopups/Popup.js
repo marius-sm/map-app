@@ -6,7 +6,10 @@ import ProtectedRoute, { AntiProtectedRoute } from "../ProtectedRoute";
 
 function Toggle(props) {
 	const name = props.name ? props.name : 'noname';
-	const close = () => <NavLink to="/"   ><div className={styles.Icon}><CloseIcon /></div></NavLink>
+	const close = () => (<div>
+                            <NavLink to="/"   ><div className={styles.Icon}><CloseIcon /></div></NavLink>
+                            <div className={styles.Arrow}><Arrow/></div>
+                        </div>)
 	const open  = () => <NavLink to={name}><div className={styles.Icon}>{props.icon}</div></NavLink>
 	return (
 		<div className={styles.Toggle}>
@@ -41,7 +44,7 @@ function Popup(props) { // Expected props : name, title, icon and children (pass
 			<div className={styles.ContentContainer}>
 				{children}
 			</div>
-			<div className={styles.Arrow}><Arrow/></div>
+
 		</div>
 	)
 	return (
