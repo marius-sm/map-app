@@ -30,3 +30,15 @@ body, html {
 .fade-in-visible {
     opacity: 1;
 }
+
+@keyframes draggablePOIpin {
+    0% {height: 40px; transform: translate(-20px,-40px)}
+    50% {height: 50px; transform: translate(-25px,-50px)}
+    100% {height: 40px; transform: translate(-20px,-40px)}
+}
+
+.draggablePOIpin .POIpin {
+    animation: draggablePOIpin 3s infinite;
+    animation-timing-function: ease-in;
+    height: 20px;
+}

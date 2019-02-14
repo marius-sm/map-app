@@ -48,9 +48,10 @@ class ConnectDraggableMarker extends Component {
                 longitude={this.state.longitude}
                 latitude={this.state.latitude}
                 draggable
+                className="draggablePOIpin"
                 onDragEnd={this.onDragEnd}
                 onDrag={this.onDrag}>
-                <Pin size={20} />
+                <Pin size={40} />
             </Marker>
         );
     }

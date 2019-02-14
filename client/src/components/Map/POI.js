@@ -15,7 +15,7 @@ class POI extends Component {
         setTimeout(function() {
             let classNames = _this.state.classNames;
             classNames.push("fade-in-visible");
-            _this.setState({classNames: classNames, style: {opacity: 1, transition: "all 1s ease"}});
+            _this.setState({classNames: classNames});
         }, 10);
 
     }

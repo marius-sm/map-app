@@ -32,15 +32,7 @@ class ConnectedMap extends Component {
           		bearing: 0,
           		pitch: 0
         	},
-        	marker: {
-          		latitude: 37.785164,
-          		longitude: -100,
-        	},
-            markers: [],
-            userAddedPOIs: [],
-        	events: {},
             visiblePOIs: [],
-            mouseDown: false,
             lastFetchPOIsTime: new Date().getTime()
       	};
         this.updateViewport = this.updateViewport.bind(this);
@@ -87,7 +79,7 @@ class ConnectedMap extends Component {
 
 	render() {
 
-		const {viewport, marker} = this.state;
+		const {viewport} = this.state;
 		const mapStyle = this.props.mapStyle ? this.props.mapStyle : "mapbox://styles/mapbox/streets-v9";
 		return (
 			<ReactMapGL
@@ -109,15 +101,11 @@ class ConnectedMap extends Component {
                             )
                         })
                     }
-				<Marker
-					longitude={marker.longitude}
-					latitude={marker.latitude}
-					draggable>
-					<Pin size={20} />
-				</Marker></div>
+                </div>
                 <DraggableMarker longitude={2.34} latitude={48.86}/>
 				<Popup latitude={37.78} longitude={-122.41} closeButton={true} closeOnClick={true} anchor="top">
-		      		<div>Point d intérêt</div>
+		      		<div>Point d'intérêt</div>
+                    <button>Bouton</button>
 		    	</Popup>
 			</ReactMapGL>
 		);
