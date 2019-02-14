@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import Pin from './Pin'
 import DraggableMarker from './DraggableMarker'
 import {fetchPOIs} from '../../actions/index'
+import POI from './POI';
+import { CSSTransition } from 'react-transition-group';
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoibWFyaXVzc20iLCJhIjoiY2pvZThiOGdqMDB3azNrbG1ybDRwMXFoayJ9.VhpcScQB1k33pHFtw0T9mg';
 
@@ -95,11 +97,15 @@ class ConnectedMap extends Component {
 				onViewportChange={this.updateViewport}
 				mapboxApiAccessToken={MAPBOX_TOKEN} >
                 <div>
-                    {this.state.visiblePOIs.map(function(POI, i){
-                        return (<Marker key={i} longitude={POI.location.coordinates[0]} latitude={POI.location.coordinates[1]}>
-                                <Pin size={20} className="POIPin"/>
-                                </Marker>)
-                    })}
+                    {
+                        this.state.visiblePOIs.map(function(poi, i) {
+                            let k = Math.floor(poi.location.coordinates[0]*1000000)+ "" +Math.floor(poi.location.coordinates[1]*1000000)
+                            k = parseInt(k);
+                            return (
+                                <POI key={k} longitude={poi.location.coordinates[0]} latitude={poi.location.coordinates[1]} />
+                            )
+                        })
+                    }
 				<Marker
 					longitude={marker.longitude}
 					latitude={marker.latitude}

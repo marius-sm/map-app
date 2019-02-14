@@ -16,6 +16,7 @@ export default class Pin extends PureComponent {
 
     return (
       <svg
+        className="pin"
         height={size}
         viewBox="0 0 24 24"
         style={{...pinStyle, transform: `translate(${-size / 2}px,${-size}px)`}}
