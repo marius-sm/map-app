@@ -63,7 +63,11 @@ class ConnectedMap extends Component {
     componentDidMount() {
         this.is_mounted = true;
         this.map = this.mapRef.getMap();
-        this.fetchPOIs();
+        const _this = this;
+        setTimeout(function() {
+            _this.fetchPOIs();
+        }, 10);
+
     }
 
     fetchPOIs() {
@@ -79,7 +83,6 @@ class ConnectedMap extends Component {
         }, function(json) {
             _this.setState({visiblePOIs: json, lastFetchPOIsTime: new Date().getTime()});
         });
-        console.log("fetching")
     }
 
 	render() {
