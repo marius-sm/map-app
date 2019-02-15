@@ -5,7 +5,7 @@ import Pin from './Pin'
 import DraggableMarker from './DraggableMarker'
 import {fetchPOIs} from '../../actions/index'
 import POI from './POI';
-import { CSSTransition } from 'react-transition-group';
+import ProtectedRoute, { AntiProtectedRoute } from "../ProtectedRoute";
 
 const MAPBOX_TOKEN = 'pk.eyJ1IjoibWFyaXVzc20iLCJhIjoiY2pvZThiOGdqMDB3azNrbG1ybDRwMXFoayJ9.VhpcScQB1k33pHFtw0T9mg';
 
@@ -81,6 +81,7 @@ class ConnectedMap extends Component {
 
 		const {viewport} = this.state;
 		const mapStyle = this.props.mapStyle ? this.props.mapStyle : "mapbox://styles/mapbox/streets-v9";
+        const draggableMarker = () => <DraggableMarker longitude={2.34} latitude={48.86} />;
 		return (
 			<ReactMapGL
                 ref={ map => this.mapRef = map }
@@ -97,12 +98,15 @@ class ConnectedMap extends Component {
                             let k = Math.floor(poi.location.coordinates[0]*1000000)+ "" +Math.floor(poi.location.coordinates[1]*1000000)
                             k = parseInt(k);
                             return (
-                                <POI key={k} longitude={poi.location.coordinates[0]} latitude={poi.location.coordinates[1]} />
+                                <div>
+                                    <POI key={k} poiObject={poi} />
+                                </div>
                             )
                         })
                     }
                 </div>
-                <DraggableMarker longitude={2.34} latitude={48.86}/>
+
+                <ProtectedRoute component={draggableMarker} />
 				<Popup latitude={37.78} longitude={-122.41} closeButton={true} closeOnClick={true} anchor="top">
 		      		<div>Point d'intérêt</div>
                     <button>Bouton</button>

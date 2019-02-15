@@ -30,11 +30,14 @@ class POI extends Component {
         return (
             <div className={Array.prototype.join.call(this.state.classNames, " ")} >
                 <Marker
-                    longitude={this.props.longitude}
-					latitude={this.props.latitude}
+                    longitude={this.props.poiObject.location.coordinates[0]}
+                    latitude={this.props.poiObject.location.coordinates[1]}
                     >
                     <Pin size={20} />
                 </Marker>
+                <Popup longitude={this.props.poiObject.location.coordinates[0]} latitude={this.props.poiObject.location.coordinates[1]} closeButton={false} closeOnClick={true} anchor="top">
+                    <div style={{fontSize: 11}}>{this.props.poiObject.name + " by " + this.props.poiObject.username}</div>
+                </Popup>
             </div>
         )
     }
