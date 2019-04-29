@@ -40,6 +40,10 @@ var db = mongoose.connection;
 app.use('/users', usersRouter);
 app.use('/poi', poiRouter);
 
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
 	res.status(404).send("Sorry, can't find that !")
@@ -58,9 +62,5 @@ app.use(function(err, req, res, next) {
 });
 
 app.use(express.static(path.join(__dirname, "client", "build")))
-
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
 
 module.exports = app;
