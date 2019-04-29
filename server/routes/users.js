@@ -1,7 +1,7 @@
 const express = require('express');
-var msg = require('./testfile.js');
-console.log(msg);
-const User = require('./models/User');
+//var msg = require('./testfile.js');
+//console.log(msg);
+const User = require('/app/models/user.js');
 const jwt = require('jsonwebtoken');
 
 const router = express.Router();
