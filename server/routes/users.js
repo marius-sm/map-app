@@ -1,4 +1,6 @@
 const express = require('express');
+var msg = require('./models/testfile.js');
+console.log(msg);
 const User = require('./models/User');
 const jwt = require('jsonwebtoken');
 
