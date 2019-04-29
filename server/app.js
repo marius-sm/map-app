@@ -12,29 +12,29 @@ var poiRouter = require('./routes/POI');
 
 var app = express();
 
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // connect to MongoDB
 //mongoose.connect('mongodb://Marius:mdpmarius1@ds151631.mlab.com:51631/mapapp', { useNewUrlParser: true });
+const mongodb_uri = process.env.MONGODB_URI || "mongodb://localhost:27017/mapapp";
 mongoose
-	.connect('mongodb://localhost:27017/mapapp', { useNewUrlParser: true })
+	.connect(mongodb_uri, { useNewUrlParser: true })
 	.then(() => console.log("MongoDB successfully connected"))
 	.catch(err => console.log(err))
 
 var db = mongoose.connection;
 
 // use sessions for tracking logins
-app.use(session({
+/*app.use(session({
   secret: 'notre secret',
   resave: true,
   saveUninitialized: false,
   store: new MongoStore({
     mongooseConnection: db
   })
-}));
+}));*/
 
 //app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -57,6 +57,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
+app.use(express.static(path.join(__dirname, "client", "build")))
 
 module.exports = app;

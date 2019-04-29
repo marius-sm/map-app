@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
+const JWTSecret = process.env.JWT_SECRET || "secret vraiment ultra secret";
+
 // insert new user into database
 router.post('/create', function (req, res) {
 	console.log('users/create received post request')
@@ -51,7 +53,7 @@ router.post('/login', function(req, res) {
 					error: {message: "Internal server error", status: 500}
 				}).status(500);
 			} else {
-				const token = jwt.sign({ id: user.id, username: user.username }, 'un secret', { expiresIn: 3600 });
+				const token = jwt.sign({ id: user.id, username: user.username }, JWTSecret, { expiresIn: 3600 });
 				res.json({
 					token
 				}).status(200);
@@ -80,7 +82,7 @@ router.get('/exists', function (req, res) {
 })
 
 function verifyToken(token, callback) {
-    jwt.verify(token, 'un secret', function(error, decoded) {
+    jwt.verify(token, JWTSecret, function(error, decoded) {
 		if(error) {
             console.log('token invalid');
             callback({result: true, error: error, decoded: decoded});
@@ -128,7 +130,7 @@ router.get('/token_is_valid_and_matches_username', function(req, res) {
 			error: {message: "No token provided"}
 		}).status(400);
 	}
-	jwt.verify(token, 'un secret', function(error, decoded) {
+	jwt.verify(token, JWTSecret, function(error, decoded) {
 		if(error) {
 			if(error.name === "TokenExpiredError") {
 				return res.json({

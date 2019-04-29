@@ -7,6 +7,8 @@ const app = express();
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 
+console.log("hgfcvhjkklnhbgfcghkjnbvvbkjnvbcfvgjbhvb fhgvbj")
+
 // Connect to MongoDB
 mongoose
 	.connect('mongodb://localhost:27017/mapapp', {useNewUrlParser: true})
