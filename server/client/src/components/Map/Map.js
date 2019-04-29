@@ -7,7 +7,7 @@ import {fetchPOIs} from '../../actions/index'
 import POI from './POI';
 import ProtectedRoute, { AntiProtectedRoute } from "../ProtectedRoute";
 
-const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN || "token not provided";
+const MAPBOX_TOKEN = "pk.eyJ1IjoibWFyaXVzc20iLCJhIjoiY2pvZThiOGdqMDB3azNrbG1ybDRwMXFoayJ9.VhpcScQB1k33pHFtw0T9mg";
 
 const mapStateToProps = state => {
   return { mapStyle: state.mapStyle };
