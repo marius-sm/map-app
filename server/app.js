@@ -39,8 +39,13 @@ var db = mongoose.connection;
 //app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/poi', poiRouter);
-
+app.get('/ping', function (req, res) {
+    return res.send('pong');
+});
+app.use(express.static(path.join(__dirname, "client", "build")));
 app.get("*", (req, res) => {
+    console.log("############## Request : " + req);
+    console.log("############## path.join : " + path.join(__dirname, "client", "build", "index.html"));
     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
@@ -60,7 +65,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-app.use(express.static(path.join(__dirname, "client", "build")))
 
 module.exports = app;
